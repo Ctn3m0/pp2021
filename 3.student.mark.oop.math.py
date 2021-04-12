@@ -1,8 +1,9 @@
 import time
 import numpy as np
 import math
+import curses
 
-class Course:  # TODO: add student and the mark , add credit
+class Course:  # done
     def __init__(self, course_name: str, course_id: int, course_credit = 0, mark=[]):
         self.validateCourse_name(course_name)
         self.validateCourse_id(course_id)
@@ -143,7 +144,7 @@ class Student(Person):
     def validateDoB(self, DoB: str):
         super().validateDoB(DoB)
 
-    def addCourse(self, course):  # TODO:
+    def addCourse(self, course):  # done
         self._course.append(course)
 
     def getCourse(self):
@@ -170,65 +171,76 @@ course = {
 }
 
 
-def student_info():  # done
-    student_id = int(input("Enter student's id: "))
-    name = input("Enter student name: ")
-    date_of_birth = input("Enter student's DoB: ")
+def student_info(screen):  # done
+    screen.addstr("Enter student's id: ")
+    student_id = int(screen.getstr().decode())
+    screen.addstr("Enter student's name: ")
+    name = screen.getstr().decode()
+    screen.addstr("Enter student's DoB: ")
+    date_of_birth = screen.getstr().decode()
     stu = Student(name, student_id, date_of_birth, [], 0)
     return stu
 
 
-def student_list():  # done
-    print("\nWe have the list of students: ")
+def student_list(screen):  # done
+    screen.addstr("\nWe have the list of students: ")
     for student in class_student["students"]:
-        print("ID: " + str(student["_student_id"]) + "\nName: " + student["_name"] + "\nDoB: " + student[
+        screen.addstr("ID: " + str(student["_student_id"]) + "\nName: " + student["_name"] + "\nDoB: " + student[
             "_DoB"] + "\nCourse: " + str(student["_course"]) +"\nGPA: "+ str(student["_GPA"]) + "\n")
 
 
-def class_number_students():  # done
-    student_number = int(input("How many student?\n- "))
+def class_number_students(screen):  # done
+    screen.addstr("How many student?\n- ")
+    student_number = int(screen.getstr().decode())
     class_student["number"] = student_number
     for i in range(student_number):
-        class_student["students"].append(student_info().getStudent())
+        class_student["students"].append(student_info(screen).getStudent())
 
 
-def list_course():  # this is to add my courses
-    course_number = int(input("Enter number of course: "))
+def list_course(screen):  # this is to add my courses
+    screen.addstr("Enter number of course:\n - ")
+    course_number = int(screen.getstr().decode())
     course["number"] = course_number
     for i in range(course_number):
-        course_name = input("Enter course name: ")
-        course_id = int(input("Enter course id: "))
-        course_credit = int(input("Enter course credit: "))
+        screen.addstr("Enter course name:\n - ")
+        course_name = screen.getstr().decode()
+        screen.addstr("Enter course id:\n - ")
+        course_id = int(screen.getstr().decode())
+        screen.addstr("Enter course credit:\n - ")
+        course_credit = int(screen.getstr().decode())
         x = Course(course_name, course_id, course_credit, [])
         course["courses"].append(x.addCourse())
+        # screen.refresh()
+        # screen.clear()
+        # screen.refresh()
+    # for cour in course["courses"]:
+    #     screen.addstr("ID: " + str(cour["_course_id"]) + "\nName: " + cour["_course_name"] + "\nCourse mark: " + str(cour[
+    #         "_course_mark"]) + "\nCourse credit: " + str(cour["_course_credit"]) + "\n")
+
+def course_list(screen):  # done
     for cour in course["courses"]:
-        print(cour)
-
-def course_list():  # done
-    for cour in course["courses"]:
-        print("ID: " + str(cour["_course_id"]) + " --- Name: " + cour["_course_name"])
-        print("Credit: " + str(cour["_course_credit"]))
-        print(cour["_course_mark"])
+        screen.addstr("ID: " + str(cour["_course_id"]) + " --- Name: " + cour["_course_name"] + "\n")
+        screen.addstr("Credit: " + str(cour["_course_credit"])+"\n")
+        for mark in cour["_course_mark"]:
+            screen.addstr(str(mark)+"\n")
 
 
-def course_mark():  # TODO: why they both have the same mark and student??
-    print("\nWe have courses: ")
-    course_list()
-    course_id = int(input("\nPlease enter course's id to enter mark: "))
-    student_name = input("Please enter student's name: ")
-    mark = math.floor(int(input("Please enter student's mark: ")))
+def course_mark(screen):  # done
+    screen.addstr("\nWe have courses: ")
+    course_list(screen)
+    screen.addstr("\nPlease enter course's id to enter mark: ")
+    course_id = int(screen.getstr().decode())
+    screen.addstr("Please enter student's name: ")
+    student_name = screen.getstr().decode()
+    screen.addstr("Please enter student's mark: ")
+    mark = math.floor(int(screen.getstr().decode()))
     course_name = ""
     cre = 0
     for cour in course["courses"]:
-        print(cour)
         if cour["_course_id"] == course_id:
-            print(cour)
             course_name = cour["_course_name"]
             cre = cour["_course_credit"]
-            cour["_course_mark"].append([student_name, mark])# ????????
-            for c in course["courses"]:
-                print(c)
-            break
+            cour["_course_mark"].append([student_name, mark])
         else:
             cour["_course_mark"] = cour["_course_mark"]
     for student in class_student["students"]:
@@ -236,14 +248,15 @@ def course_mark():  # TODO: why they both have the same mark and student??
             student["_course"].append([course_name, mark, cre])
 
 
-def show_mark():  # TODO
-    course_id = int(input("Please enter course id to see the marks: "))
+def show_mark(screen):  # done
+    screen.addstr("Please enter course id to see the marks:\n- ")
+    course_id = int(screen.getstr().decode())
     for cour in course["courses"]:
         if cour["_course_id"] == course_id:
             for i in range(2, len(cour)):
-                print(cour["_course_mark"])
+                screen.addstr(cour["_course_mark"])
 
-def calculateGPA():
+def calculateGPA(screen):
     total_mark = 0
     total_credit = 0
     for student in class_student["students"]:
@@ -253,6 +266,7 @@ def calculateGPA():
             total_credit += cour[2]
             gpa = total_mark/total_credit
         student["_GPA"] = gpa
+    student_list(screen)
 
 def array():
     arr = []
@@ -260,85 +274,83 @@ def array():
         arr += [[student["_name"], student["_GPA"]]]
     return arr
 
-def list_gpa(): #use sort
+def list_gpa(): #done
     gpas = np.array([])
     for student in class_student["students"]:
         gpas = np.concatenate((gpas, [int(student["_GPA"])]))
     return gpas
 
-def rank():
+def rank(screen):
     x = []
     sorted = np.sort(list_gpa())[::-1]
     for student in class_student["students"]:
         x.append([student["_name"], int(student["_GPA"])])
-    print("We have the list of sorted student in descending order:")
+    screen.addstr("We have the list of sorted student in descending order:\n")
     for gpa in sorted:
         for stu in x:
             if gpa == stu[1]:
-                print(stu[0])
+                screen.addstr(stu[0] + "\n")
                 x.remove(stu)
 
-def menu():
-    print("""
-    Please choose your action:
-    Add Student: 1
-    Show Students: 2
-    Add Courses: 3
-    Show Course: 4
-    Add Mark: 5
-    Show Mark: 6
-    Calculate GPA: 7
-    Sorted GPA: 8
-    Exit: 9
-    """)
+def menu(screen):
+    screen.addstr(
+        "Please choose your action:\nAdd Student: 1\nShow Students: 2\nAdd Courses: 3\nShow Course: 4\nAdd Mark: 5\nShow Mark: 6\nCalculate GPA: 7\nSorted GPA: 8\nExit: 9")
+    screen.addstr("\n\nEnter your action: ")
+    screen.refresh()
+    curses.napms(2000)
 
-def engine():
-    menu()
-    act = int(input("Enter number of action: "))
+def clear(screen):
+    screen.refresh()
+    curses.napms(2000)
+    screen.clear()
+    screen.refresh()
+    curses.endwin()
+
+def engine(screen):
+    menu(screen)
+    act = int(screen.getstr().decode())
     if act == 1:
-        class_number_students()
-        time.sleep(2)
-        engine()
+        class_number_students(screen)
+        clear(screen)
+        engine(screen)
     elif act == 2:
-        student_list()
-        time.sleep(2)
-        engine()
+        student_list(screen)
+        clear(screen)
+        engine(screen)
     elif act == 3:
-        list_course()
-        time.sleep(2)
-        engine()
+        list_course(screen)
+        clear(screen)
+        engine(screen)
     elif act == 4:
-        course_list()
-        time.sleep(2)
-        engine()
+        course_list(screen)
+        clear(screen)
+        engine(screen)
     elif act == 5:
-        course_mark()
-        time.sleep(2)
-        engine()
+        course_mark(screen)
+        clear(screen)
+        engine(screen)
     elif act == 6:
-        show_mark()
-        time.sleep(2)
-        engine()
+        show_mark(screen)
+        clear(screen)
+        engine(screen)
     elif act == 7:
-        calculateGPA()
-        time.sleep(2)
-        engine()
+        calculateGPA(screen)
+        clear(screen)
+        engine(screen)
     elif act == 8:
-        rank()
-        time.sleep(2)
-        engine()
+        rank(screen)
+        clear(screen)
+        engine(screen)
     elif act == 9:
-        print("Bye bye")
-        return None
+        screen.addstr("Bye bye")
+        clear(screen)
     else:
         raise Exception("You did not enter the given menu")
 
-if __name__ == '__main__':
-    #class_number_students()
-    #list_course()
 
-    engine()
-    student_list()
+if __name__ == '__main__':
+    screen = curses.initscr()
+    engine(screen)
 
 
 
