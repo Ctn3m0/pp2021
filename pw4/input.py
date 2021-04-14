@@ -1,8 +1,8 @@
 import numpy as np
 import math
 import curses
-from domains.Student import Student
-from domains.Course import Course
+from domains.student import Student
+from domains.course import Course
 from output import course_list
 
 def student_info(screen):  # done
