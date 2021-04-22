@@ -1,0 +1,8 @@
+
+ID: 1 --- Name: oop
+Credit: 4
+[['hieu', 15], ['hung', 20]]
+
+ID: 2 --- Name: dip
+Credit: 5
+[['hieu', 18], ['hung', 19]]
