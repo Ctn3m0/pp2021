@@ -1,0 +1,10 @@
+
+ID: 1
+Name: hieu
+Course: [['oop', 15, 4], ['dip', 18, 5]]
+GPA: 16.666666666666668
+
+ID: 2
+Name: hung
+Course: [['oop', 20, 4], ['dip', 19, 5]]
+GPA: 18.055555555555557
