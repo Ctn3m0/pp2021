@@ -1,10 +1,11 @@
 import numpy as np
 import math
 import curses
+import compress
 from input import *
 from output import *
 from write import *
-from compress import *
+
 
 
 class_student = {
@@ -31,7 +32,7 @@ def clear(screen):
     curses.endwin()
 
 def engine(screen):
-    #extract_data()
+
     menu(screen)
     act = int(screen.getstr().decode())
     if act == 1:
@@ -77,5 +78,8 @@ def engine(screen):
 
 
 if __name__ == '__main__':
+    compress.extract_data(class_student, course)
+    # for a in class_student["students"]:
+    #     print(a)
     screen = curses.initscr()
     engine(screen)

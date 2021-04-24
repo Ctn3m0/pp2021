@@ -4,7 +4,30 @@ import math
 import string
 from main_1 import *
 
-def Init():
+# class_student = {
+#     "number": 0,
+#     "students": [{'_name': 'hieu', '_DoB': '15', '_student_id': 1, '_course': [['dip', 15, 4], ['oop', 16, 5]], '_GPA': 15},
+#                  {'_name': 'ngoc', '_DoB': '20', '_student_id': 2, '_course': [['dip', 11, 4], ['oop', 12, 5]], '_GPA': 13}]
+# }
+# course = {
+#     "number": 0,
+#     "courses": [{'_course_name': 'dip', '_course_id': 1, '_course_credit': 4, '_course_mark': [['hieu', 15], ['ngoc', 11]]},
+#                 {'_course_name': 'oop', '_course_id': 2, '_course_credit': 5, '_course_mark': [['hieu', 15], ['ngoc', 16]]}]
+# }
+from pythonProject.pw5 import main_1
+
+# class_student = {
+#     "number": 0,
+#     "students": []
+# }
+#
+# course = {
+#     "number": 0,
+#     "courses": []
+# }
+
+
+def Init(class_student, course):
     mylines = []
     with open('info/marks.txt', 'rt') as myfile:
         for myline in myfile:
@@ -66,22 +89,26 @@ def Init():
         if count == 0: break
     #Add mark time
     ind = 0
-    print(t)
     for student in class_student["students"]:
         for num in range(0,2):
             student["_course"].append([t[ind], t[ind+1], t[ind+2]])
             ind = ind + 3
-    # for a in class_student["students"]:
-    #     print(a)
+
     #TODO: add marks to course
     cor = 0
-    # for i in range(len(class_student["students"])):
-    #     for m in range(len(course["courses"])): #TODO
-    #         course["courses"][m]["_course_mark"].append([class_student["students"][i]["_name"], class_student["students"][i]["_course"][m][1]])
+    for i in range(len(class_student["students"])):
+        for m in range(len(course["courses"])): #TODO
+            course["courses"][m]["_course_mark"].append([class_student["students"][i]["_name"], class_student["students"][i]["_course"][m][1]])
     # for cour in course["courses"]:
     #     print("ID: " + str(cour["_course_id"]) + " --- Name: " + cour["_course_name"] + "\n")
     #     print("Credit: " + str(cour["_course_credit"]) + "\n")
     #     for mark in cour["_course_mark"]:
     #         print(str(mark) + "\n")
     #doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    # print(class_student)
+    # for a in class_student["students"]:
+    #     print(a)
+    # print(course)
 
+# if __name__ == '__main__':
+#     Init()

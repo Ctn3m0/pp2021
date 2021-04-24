@@ -13,6 +13,8 @@ students = "/home/ctn3m0/PycharmProjects/pythonProject/pw5/info/students.txt"
 #                 {'_course_name': 'oop', '_course_id': 2, '_course_credit': 5, '_course_mark': [['hieu', 15], ['ngoc', 16]]}]
 # }
 
+
+
 def get_text_students_file(students, class_student):
     f = open(students, "w")
     for student in class_student["students"]:

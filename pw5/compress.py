@@ -10,13 +10,13 @@ def file_listing():
             flist.append(entry)
     return flist
 
-def extract_data():
+def extract_data(class_student, course):
     file_listing()
     for file in file_listing():
         if file == "students.dat":
             data_zip = zipfile.ZipFile('students.dat', 'r')
             data_zip.extractall(path='.')
-            init.Init()
+            init.Init(class_student, course)
 
 def compress():
     try:
