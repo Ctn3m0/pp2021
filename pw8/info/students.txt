@@ -1,0 +1,10 @@
+
+ID: 1
+Name: hieu
+DoB: 15
+Course: [['oop', 15, 4], ['dip', 18, 5]]
+
+ID: 2
+Name: hung
+DoB: 22
+Course: [['oop', 20, 4], ['dip', 19, 5]]
